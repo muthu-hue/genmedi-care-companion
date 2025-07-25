@@ -1,6 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { 
   Sidebar, 
   SidebarContent, 
@@ -20,7 +19,8 @@ import {
   Shield, 
   Search,
   Home,
-  X
+  X,
+  RefreshCw
 } from "lucide-react";
 
 interface MedicalSidebarProps {
@@ -69,20 +69,45 @@ const sidebarSections: SidebarSection[] = [
 export const MedicalSidebar = ({ children }: MedicalSidebarProps) => {
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const [iframeKey, setIframeKey] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasError, setHasError] = useState(false);
 
   const handleSectionClick = (sectionId: string) => {
     const newSection = activeSection === sectionId ? null : sectionId;
     setActiveSection(newSection);
-    // Force iframe reload by changing key
+    setHasError(false);
+    
     if (newSection) {
+      setIsLoading(true);
       setIframeKey(prev => prev + 1);
     }
   };
 
   const handleBackToHome = () => {
     setActiveSection(null);
+    setIsLoading(false);
+    setHasError(false);
+  };
+
+  const handleIframeLoad = () => {
+    setIsLoading(false);
+    setHasError(false);
+    console.log(`Iframe loaded successfully: ${activeSection}`);
+  };
+
+  const handleIframeError = () => {
+    setIsLoading(false);
+    setHasError(true);
+    console.error(`Iframe failed to load: ${activeSection}`);
+  };
+
+  const handleRefresh = () => {
+    setIsLoading(true);
+    setHasError(false);
     setIframeKey(prev => prev + 1);
   };
+
+  const currentSection = sidebarSections.find(s => s.id === activeSection);
 
   return (
     <SidebarProvider>
@@ -129,50 +154,85 @@ export const MedicalSidebar = ({ children }: MedicalSidebarProps) => {
             <div className="flex items-center gap-2 flex-1">
               <h1 className="text-lg font-semibold">
                 {activeSection 
-                  ? sidebarSections.find(s => s.id === activeSection)?.title 
+                  ? currentSection?.title 
                   : "MediCare AI Dashboard"
                 }
               </h1>
               {activeSection && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleBackToHome}
-                  className="ml-auto"
-                >
-                  <X className="h-4 w-4 mr-2" />
-                  Close
-                </Button>
+                <div className="ml-auto flex items-center gap-2">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleRefresh}
+                    disabled={isLoading}
+                  >
+                    <RefreshCw className={`h-4 w-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
+                    Refresh
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleBackToHome}
+                  >
+                    <X className="h-4 w-4 mr-2" />
+                    Close
+                  </Button>
+                </div>
               )}
             </div>
           </header>
 
-          <main className="flex-1 min-h-0">
+          <main className="flex-1 overflow-hidden">
             {activeSection ? (
               <div className="h-full flex flex-col">
                 <div className="p-4 border-b bg-muted/50 flex-shrink-0">
                   <div className="max-w-4xl">
                     <h2 className="text-xl font-semibold mb-2">
-                      {sidebarSections.find(s => s.id === activeSection)?.title}
+                      {currentSection?.title}
                     </h2>
                     <p className="text-muted-foreground">
-                      {sidebarSections.find(s => s.id === activeSection)?.description}
+                      {currentSection?.description}
                     </p>
                   </div>
                 </div>
-                <div className="flex-1 min-h-0 iframe-container">
+                
+                <div className="flex-1 relative bg-white">
+                  {isLoading && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-white z-10">
+                      <div className="text-center">
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-2"></div>
+                        <p className="text-sm text-muted-foreground">Loading {currentSection?.title}...</p>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {hasError && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-white z-10">
+                      <div className="text-center">
+                        <p className="text-sm text-destructive mb-2">Failed to load {currentSection?.title}</p>
+                        <Button onClick={handleRefresh} size="sm">
+                          <RefreshCw className="h-4 w-4 mr-2" />
+                          Try Again
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                  
                   <iframe
-                    key={`iframe-${activeSection}-${iframeKey}`}
-                    src={sidebarSections.find(s => s.id === activeSection)?.url}
-                    className="w-full h-full border-0 bg-white"
-                    title={sidebarSections.find(s => s.id === activeSection)?.title}
-                    allow="camera; microphone; geolocation; fullscreen; payment; autoplay; encrypted-media"
-                    sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox allow-top-navigation allow-modals"
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                    style={{ minHeight: '600px' }}
-                    onLoad={() => console.log(`Iframe loaded: ${activeSection}`)}
-                    onError={(e) => console.error(`Iframe error: ${activeSection}`, e)}
+                    key={`${activeSection}-${iframeKey}`}
+                    src={currentSection?.url}
+                    className="w-full h-full border-0"
+                    title={currentSection?.title}
+                    onLoad={handleIframeLoad}
+                    onError={handleIframeError}
+                    sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation allow-modals"
+                    allow="accelerometer; autoplay; camera; clipboard-read; clipboard-write; encrypted-media; fullscreen; geolocation; gyroscope; magnetometer; microphone; midi; payment; picture-in-picture; publickey-credentials-get; screen-wake-lock; web-share"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    loading="eager"
+                    style={{ 
+                      minHeight: 'calc(100vh - 200px)',
+                      display: hasError ? 'none' : 'block'
+                    }}
                   />
                 </div>
               </div>
