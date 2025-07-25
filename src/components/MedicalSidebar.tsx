@@ -48,7 +48,7 @@ const sidebarSections: SidebarSection[] = [
     title: "Disease Risk Prediction",
     description: "Predict disease risk factors",
     icon: <Activity className="h-4 w-4" />,
-    url: "http://v0-disease-risk-prediction.vercel.app"
+    url: "https://v0-disease-risk-prediction.vercel.app"
   },
   {
     id: "first-aid",
@@ -119,7 +119,7 @@ export const MedicalSidebar = ({ children }: MedicalSidebarProps) => {
         <SidebarInset className="flex-1">
           <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
             <SidebarTrigger className="-ml-1" />
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-1">
               <h1 className="text-lg font-semibold">
                 {activeSection 
                   ? sidebarSections.find(s => s.id === activeSection)?.title 
@@ -140,10 +140,10 @@ export const MedicalSidebar = ({ children }: MedicalSidebarProps) => {
             </div>
           </header>
 
-          <main className="flex-1">
+          <main className="flex-1 min-h-0">
             {activeSection ? (
-              <div className="h-full">
-                <div className="p-4 border-b bg-muted/50">
+              <div className="h-full flex flex-col">
+                <div className="p-4 border-b bg-muted/50 flex-shrink-0">
                   <div className="max-w-4xl">
                     <h2 className="text-xl font-semibold mb-2">
                       {sidebarSections.find(s => s.id === activeSection)?.title}
@@ -153,7 +153,7 @@ export const MedicalSidebar = ({ children }: MedicalSidebarProps) => {
                     </p>
                   </div>
                 </div>
-                <div className="h-[calc(100vh-8rem)]">
+                <div className="flex-1 min-h-0">
                   <iframe
                     src={sidebarSections.find(s => s.id === activeSection)?.url}
                     className="w-full h-full border-0"
@@ -164,7 +164,7 @@ export const MedicalSidebar = ({ children }: MedicalSidebarProps) => {
                 </div>
               </div>
             ) : (
-              <div className="p-4">
+              <div className="p-4 h-full overflow-auto">
                 {children}
               </div>
             )}

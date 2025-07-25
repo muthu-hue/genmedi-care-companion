@@ -37,10 +37,10 @@ const Index = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-medical-50 to-medical-100 flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center space-y-4">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-medical-600 mx-auto"></div>
-          <p className="text-medical-600">Loading...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+          <p className="text-muted-foreground">Loading...</p>
         </div>
       </div>
     );
@@ -66,12 +66,12 @@ const Index = () => {
             <div className="text-center">
               <h2 className="text-2xl font-bold mb-4">Doctor Finder</h2>
               <p className="text-muted-foreground mb-4">Coming soon - Find healthcare providers near you</p>
-              <button 
+              <Button
+                variant="outline"
                 onClick={handleBackToDashboard}
-                className="text-primary hover:underline"
               >
                 Back to Dashboard
-              </button>
+              </Button>
             </div>
           </div>
         );
@@ -82,12 +82,12 @@ const Index = () => {
             <div className="text-center">
               <h2 className="text-2xl font-bold mb-4">Health FAQ</h2>
               <p className="text-muted-foreground mb-4">Coming soon - Medical knowledge chatbot</p>
-              <button 
+              <Button
+                variant="outline"
                 onClick={handleBackToDashboard}
-                className="text-primary hover:underline"
               >
                 Back to Dashboard
-              </button>
+              </Button>
             </div>
           </div>
         );
@@ -98,12 +98,12 @@ const Index = () => {
             <div className="text-center">
               <h2 className="text-2xl font-bold mb-4">Health Tips</h2>
               <p className="text-muted-foreground mb-4">Coming soon - Daily wellness advice</p>
-              <button 
+              <Button
+                variant="outline"
                 onClick={handleBackToDashboard}
-                className="text-primary hover:underline"
               >
                 Back to Dashboard
-              </button>
+              </Button>
             </div>
           </div>
         );
@@ -114,14 +114,14 @@ const Index = () => {
 
   return (
     <MedicalSidebar>
-      <div className="min-h-screen bg-gradient-to-br from-medical-50 to-medical-100">
+      <div className="min-h-full">
         {activeService !== 'dashboard' && (
           <div className="absolute top-4 right-4 z-10">
             <Button
               onClick={handleSignOut}
               variant="outline"
               size="sm"
-              className="bg-white/80 hover:bg-white border-medical-200"
+              className="bg-background/80 hover:bg-background"
             >
               <LogOut className="h-4 w-4 mr-2" />
               Sign Out

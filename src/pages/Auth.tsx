@@ -86,12 +86,12 @@ const Auth = () => {
         {/* Logo/Header */}
         <div className="text-center space-y-2">
           <div className="flex justify-center">
-            <div className="bg-medical-600 p-3 rounded-full">
+            <div className="bg-primary p-3 rounded-full">
               <Heart className="h-8 w-8 text-white" />
             </div>
           </div>
-          <h1 className="text-3xl font-bold text-medical-900">MediCare AI</h1>
-          <p className="text-medical-600">Your trusted medical companion</p>
+          <h1 className="text-3xl font-bold text-foreground">MediCare AI</h1>
+          <p className="text-muted-foreground">Your trusted medical companion</p>
         </div>
 
         <Card className="shadow-xl border-0 bg-white/95 backdrop-blur-sm">
@@ -103,7 +103,7 @@ const Auth = () => {
 
             <TabsContent value="signin">
               <CardHeader className="text-center pb-4">
-                <CardTitle className="text-2xl text-medical-800">Welcome Back</CardTitle>
+                <CardTitle className="text-2xl text-foreground">Welcome Back</CardTitle>
                 <CardDescription>Sign in to access your medical dashboard</CardDescription>
               </CardHeader>
               <CardContent>
@@ -120,7 +120,7 @@ const Auth = () => {
                       value={signInData.email}
                       onChange={(e) => setSignInData({ ...signInData, email: e.target.value })}
                       required
-                      className="border-medical-200 focus:border-medical-500"
+                      className="focus:border-primary"
                     />
                   </div>
                   <div className="space-y-2">
@@ -135,12 +135,12 @@ const Auth = () => {
                       value={signInData.password}
                       onChange={(e) => setSignInData({ ...signInData, password: e.target.value })}
                       required
-                      className="border-medical-200 focus:border-medical-500"
+                      className="focus:border-primary"
                     />
                   </div>
                   <Button 
                     type="submit" 
-                    className="w-full bg-medical-600 hover:bg-medical-700"
+                    className="w-full"
                     disabled={isLoading}
                   >
                     {isLoading ? 'Signing in...' : 'Sign In'}
@@ -151,7 +151,7 @@ const Auth = () => {
 
             <TabsContent value="signup">
               <CardHeader className="text-center pb-4">
-                <CardTitle className="text-2xl text-medical-800">Join MediCare</CardTitle>
+                <CardTitle className="text-2xl text-foreground">Join MediCare</CardTitle>
                 <CardDescription>Create your account to get started</CardDescription>
               </CardHeader>
               <CardContent>
@@ -168,7 +168,7 @@ const Auth = () => {
                       value={signUpData.fullName}
                       onChange={(e) => setSignUpData({ ...signUpData, fullName: e.target.value })}
                       required
-                      className="border-medical-200 focus:border-medical-500"
+                      className="focus:border-primary"
                     />
                   </div>
                   <div className="space-y-2">
@@ -183,7 +183,7 @@ const Auth = () => {
                       value={signUpData.email}
                       onChange={(e) => setSignUpData({ ...signUpData, email: e.target.value })}
                       required
-                      className="border-medical-200 focus:border-medical-500"
+                      className="focus:border-primary"
                     />
                   </div>
                   <div className="space-y-2">
@@ -198,7 +198,7 @@ const Auth = () => {
                       value={signUpData.phone}
                       onChange={(e) => setSignUpData({ ...signUpData, phone: e.target.value })}
                       required
-                      className="border-medical-200 focus:border-medical-500"
+                      className="focus:border-primary"
                     />
                   </div>
                   <div className="space-y-2">
@@ -213,7 +213,7 @@ const Auth = () => {
                       value={signUpData.password}
                       onChange={(e) => setSignUpData({ ...signUpData, password: e.target.value })}
                       required
-                      className="border-medical-200 focus:border-medical-500"
+                      className="focus:border-primary"
                     />
                   </div>
                   
@@ -224,17 +224,17 @@ const Auth = () => {
                       onValueChange={(value: 'doctor' | 'user') => setSignUpData({ ...signUpData, role: value })}
                       className="grid grid-cols-2 gap-4"
                     >
-                      <div className="flex items-center space-x-2 border border-medical-200 rounded-lg p-3 hover:border-medical-400 transition-colors">
+                      <div className="flex items-center space-x-2 border border-input rounded-lg p-3 hover:border-primary transition-colors">
                         <RadioGroupItem value="user" id="user" />
                         <Label htmlFor="user" className="flex items-center gap-2 cursor-pointer">
-                          <User className="h-5 w-5 text-medical-600" />
+                          <User className="h-5 w-5 text-primary" />
                           <span>Patient</span>
                         </Label>
                       </div>
-                      <div className="flex items-center space-x-2 border border-medical-200 rounded-lg p-3 hover:border-medical-400 transition-colors">
+                      <div className="flex items-center space-x-2 border border-input rounded-lg p-3 hover:border-primary transition-colors">
                         <RadioGroupItem value="doctor" id="doctor" />
                         <Label htmlFor="doctor" className="flex items-center gap-2 cursor-pointer">
-                          <Stethoscope className="h-5 w-5 text-medical-600" />
+                          <Stethoscope className="h-5 w-5 text-primary" />
                           <span>Doctor</span>
                         </Label>
                       </div>
@@ -243,7 +243,7 @@ const Auth = () => {
 
                   <Button 
                     type="submit" 
-                    className="w-full bg-medical-600 hover:bg-medical-700"
+                    className="w-full"
                     disabled={isLoading}
                   >
                     {isLoading ? 'Creating account...' : 'Create Account'}
@@ -255,7 +255,7 @@ const Auth = () => {
         </Card>
 
         <div className="text-center">
-          <p className="text-sm text-medical-600">
+          <p className="text-sm text-muted-foreground">
             By continuing, you agree to our Terms of Service and Privacy Policy
           </p>
         </div>

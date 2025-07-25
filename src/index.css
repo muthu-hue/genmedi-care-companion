@@ -70,6 +70,17 @@ All colors MUST be HSL.
 
     --sidebar-primary-foreground: 0 0% 98%;
 
+
+    /* Medical color aliases for backward compatibility */
+    --medical-50: 210 15% 97%;
+    --medical-100: 210 20% 95%;
+    --medical-200: 210 20% 90%;
+    --medical-400: 210 50% 70%;
+    --medical-500: 210 85% 45%;
+    --medical-600: 210 85% 45%;
+    --medical-700: 210 90% 35%;
+    --medical-800: 210 20% 20%;
+    --medical-900: 210 20% 15%;
     --sidebar-accent: 240 4.8% 95.9%;
 
     --sidebar-accent-foreground: 240 5.9% 10%;
@@ -115,6 +126,17 @@ All colors MUST be HSL.
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* Medical color aliases for dark mode */
+    --medical-50: 217.2 32.6% 17.5%;
+    --medical-100: 217.2 32.6% 20%;
+    --medical-200: 217.2 32.6% 25%;
+    --medical-400: 210 40% 60%;
+    --medical-500: 210 40% 80%;
+    --medical-600: 210 40% 80%;
+    --medical-700: 210 40% 90%;
+    --medical-800: 210 40% 95%;
+    --medical-900: 210 40% 98%;
   }
 }
 

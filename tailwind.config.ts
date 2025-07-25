@@ -67,6 +67,17 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				medical: {
+					50: 'hsl(var(--medical-50))',
+					100: 'hsl(var(--medical-100))',
+					200: 'hsl(var(--medical-200))',
+					400: 'hsl(var(--medical-400))',
+					500: 'hsl(var(--medical-500))',
+					600: 'hsl(var(--medical-600))',
+					700: 'hsl(var(--medical-700))',
+					800: 'hsl(var(--medical-800))',
+					900: 'hsl(var(--medical-900))'
 				}
 			},
 			backgroundImage: {
