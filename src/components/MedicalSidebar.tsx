@@ -41,7 +41,7 @@ const sidebarSections: SidebarSection[] = [
     title: "Medical Chatbot",
     description: "AI-powered medical consultation",
     icon: <MessageSquare className="h-4 w-4" />,
-    url: "https://v0-medical-chatbot-website-six.vercel.app/"
+    url: "https://v0-medical-chatbot-website-six.vercel.app"
   },
   {
     id: "risk-prediction",
@@ -55,26 +55,33 @@ const sidebarSections: SidebarSection[] = [
     title: "Dynamic First Aid Guide",
     description: "Interactive first aid assistance",
     icon: <Shield className="h-4 w-4" />,
-    url: "https://v0-dynamic-first-aid-guide.vercel.app/"
+    url: "https://v0-dynamic-first-aid-guide.vercel.app"
   },
   {
     id: "disease-identifier",
     title: "Disease Identifier AI",
     description: "AI-powered disease identification",
     icon: <Search className="h-4 w-4" />,
-    url: "https://v0-disease-identifier-ai.vercel.app/"
+    url: "https://v0-disease-identifier-ai.vercel.app"
   }
 ];
 
 export const MedicalSidebar = ({ children }: MedicalSidebarProps) => {
   const [activeSection, setActiveSection] = useState<string | null>(null);
+  const [iframeKey, setIframeKey] = useState(0);
 
   const handleSectionClick = (sectionId: string) => {
-    setActiveSection(activeSection === sectionId ? null : sectionId);
+    const newSection = activeSection === sectionId ? null : sectionId;
+    setActiveSection(newSection);
+    // Force iframe reload by changing key
+    if (newSection) {
+      setIframeKey(prev => prev + 1);
+    }
   };
 
   const handleBackToHome = () => {
     setActiveSection(null);
+    setIframeKey(prev => prev + 1);
   };
 
   return (
@@ -153,13 +160,19 @@ export const MedicalSidebar = ({ children }: MedicalSidebarProps) => {
                     </p>
                   </div>
                 </div>
-                <div className="flex-1 min-h-0">
+                <div className="flex-1 min-h-0 iframe-container">
                   <iframe
+                    key={`iframe-${activeSection}-${iframeKey}`}
                     src={sidebarSections.find(s => s.id === activeSection)?.url}
-                    className="w-full h-full border-0"
+                    className="w-full h-full border-0 bg-white"
                     title={sidebarSections.find(s => s.id === activeSection)?.title}
-                    allow="camera; microphone; geolocation"
-                    sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox"
+                    allow="camera; microphone; geolocation; fullscreen; payment; autoplay; encrypted-media"
+                    sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox allow-top-navigation allow-modals"
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    style={{ minHeight: '600px' }}
+                    onLoad={() => console.log(`Iframe loaded: ${activeSection}`)}
+                    onError={(e) => console.error(`Iframe error: ${activeSection}`, e)}
                   />
                 </div>
               </div>

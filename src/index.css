@@ -148,4 +148,18 @@ All colors MUST be HSL.
   body {
     @apply bg-background text-foreground;
   }
+
+  /* Ensure iframes load properly */
+  iframe {
+    border: none;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  /* Fix any potential z-index issues */
+  .iframe-container {
+    position: relative;
+    z-index: 1;
+  }
 }
