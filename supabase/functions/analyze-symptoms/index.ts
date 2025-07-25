@@ -27,44 +27,12 @@ serve(async (req) => {
       );
     }
 
-    const prompt = `You are an advanced medical AI assistant specialized in accurate disease diagnosis. Based on the following symptoms and patient information, provide a precise medical analysis with specific disease conditions. Return your response as a JSON array of objects with the following structure:
-
-[
-  {
-    "condition": "Exact Disease Name",
-    "probability": "High/Medium/Low (percentage)",
-    "description": "Detailed medical description of the condition",
-    "recommendations": ["specific recommendation 1", "specific recommendation 2", ...]
-  }
-]
-
-Patient Information:
-- Age: ${age || 'Not provided'}
-- Gender: ${gender || 'Not provided'}
-- Duration: ${duration || 'Not provided'}
-- Symptoms: ${symptoms}
-
-CRITICAL INSTRUCTIONS:
-1. Provide EXACT disease names, not general categories
-2. Include 3-5 most likely specific conditions based on symptoms
-3. Consider the patient's age and gender in diagnosis
-4. Provide accurate probability assessments
-5. Give specific medical recommendations for each condition
-6. Focus on precision - avoid vague conditions
-7. Consider both common and rare diseases that match the symptoms
-8. Return ONLY valid JSON without any markdown formatting or code blocks
-
-Medical Analysis Guidelines:
-- Consider symptom combinations and patterns
-- Factor in epidemiological data for age/gender
-- Include both acute and chronic conditions
-- Provide actionable medical advice
-- Always recommend professional medical consultation
+    const prompt = "You are an advanced medical AI assistant specialized in accurate disease diagnosis. Based on the following symptoms and patient information, provide a precise medical analysis with specific disease conditions. Return your response as a JSON array of objects with the following structure:\n\n[\n  {\n    \"condition\": \"Exact Disease Name\",\n    \"probability\": \"High/Medium/Low (percentage)\",\n    \"description\": \"Detailed medical description of the condition\",\n    \"recommendations\": [\"specific recommendation 1\", \"specific recommendation 2\", ...]\n  }\n]\n\nPatient Information:\n- Age: " + (age || 'Not provided') + "\n- Gender: " + (gender || 'Not provided') + "\n- Duration: " + (duration || 'Not provided') + "\n- Symptoms: " + symptoms + "\n\nCRITICAL INSTRUCTIONS:\n1. Provide EXACT disease names, not general categories\n2. Include 3-5 most likely specific conditions based on symptoms\n3. Consider the patient's age and gender in diagnosis\n4. Provide accurate probability assessments\n5. Give specific medical recommendations for each condition\n6. Focus on precision - avoid vague conditions\n7. Consider both common and rare diseases that match the symptoms\n8. Return ONLY valid JSON without any markdown formatting or code blocks\n\nMedical Analysis Guidelines:\n- Consider symptom combinations and patterns\n- Factor in epidemiological data for age/gender\n- Include both acute and chronic conditions\n- Provide actionable medical advice\n- Always recommend professional medical consultation";
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${openAIApiKey}`,
+        'Authorization': 'Bearer ' + openAIApiKey,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
