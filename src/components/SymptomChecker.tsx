@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { ArrowLeft, AlertTriangle, Search, Stethoscope, MapPin } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 interface SymptomCheckerProps {
   onBack: () => void;
@@ -41,30 +42,24 @@ export const SymptomChecker = ({ onBack }: SymptomCheckerProps) => {
     setIsAnalyzing(true);
     
     try {
-      const response = await fetch('/api/analyze-symptoms', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
+      const { data, error } = await supabase.functions.invoke('analyze-symptoms', {
+        body: {
           symptoms,
           age,
           gender,
           duration
-        }),
+        }
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to analyze symptoms');
+      if (error) {
+        throw new Error(error.message || 'Failed to analyze symptoms');
       }
 
-      const data = await response.json();
-      
-      if (data.error) {
+      if (data?.error) {
         throw new Error(data.error);
       }
 
-      setResults(data.analysis || []);
+      setResults(data?.analysis || []);
       
       toast({
         title: "Analysis Complete",
