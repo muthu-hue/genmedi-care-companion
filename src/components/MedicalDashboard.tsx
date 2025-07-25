@@ -1,6 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Stethoscope, Pill, Shield, MapPin, MessageCircle, Heart } from "lucide-react";
+import { Stethoscope, Pill, Shield, MapPin, MessageCircle, Heart, LogOut } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import { useNavigate } from 'react-router-dom';
 import heroImage from "@/assets/medical-hero.jpg";
 
 interface ServiceCardProps {
@@ -38,6 +40,14 @@ interface MedicalDashboardProps {
 }
 
 export const MedicalDashboard = ({ onServiceSelect }: MedicalDashboardProps) => {
+  const { signOut } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate('/auth');
+  };
+
   const services = [
     {
       icon: <Stethoscope className="w-6 h-6" />,
@@ -91,6 +101,19 @@ export const MedicalDashboard = ({ onServiceSelect }: MedicalDashboardProps) => 
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Sign Out Button */}
+      <div className="absolute top-4 right-4 z-10">
+        <Button
+          onClick={handleSignOut}
+          variant="outline"
+          size="sm"
+          className="bg-white/80 hover:bg-white border-medical-200"
+        >
+          <LogOut className="h-4 w-4 mr-2" />
+          Sign Out
+        </Button>
+      </div>
+
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-hero">
         <div className="absolute inset-0 bg-black/20"></div>

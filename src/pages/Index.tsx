@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
+import { MedicalSidebar } from "@/components/MedicalSidebar";
 import { MedicalDashboard } from "@/components/MedicalDashboard";
 import { SymptomChecker } from "@/components/SymptomChecker";
 import { MedicationInfo } from "@/components/MedicationInfo";
@@ -107,42 +108,29 @@ const Index = () => {
           </div>
         );
       default:
-        return (
-          <div className="relative">
-            <div className="absolute top-4 right-4 z-10">
-              <Button
-                onClick={handleSignOut}
-                variant="outline"
-                size="sm"
-                className="bg-white/80 hover:bg-white border-medical-200"
-              >
-                <LogOut className="h-4 w-4 mr-2" />
-                Sign Out
-              </Button>
-            </div>
-            <MedicalDashboard onServiceSelect={handleServiceSelect} />
-          </div>
-        );
+        return <MedicalDashboard onServiceSelect={handleServiceSelect} />;
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-medical-50 to-medical-100">
-      {activeService !== 'dashboard' && (
-        <div className="absolute top-4 right-4 z-10">
-          <Button
-            onClick={handleSignOut}
-            variant="outline"
-            size="sm"
-            className="bg-white/80 hover:bg-white border-medical-200"
-          >
-            <LogOut className="h-4 w-4 mr-2" />
-            Sign Out
-          </Button>
-        </div>
-      )}
-      {renderActiveService()}
-    </div>
+    <MedicalSidebar>
+      <div className="min-h-screen bg-gradient-to-br from-medical-50 to-medical-100">
+        {activeService !== 'dashboard' && (
+          <div className="absolute top-4 right-4 z-10">
+            <Button
+              onClick={handleSignOut}
+              variant="outline"
+              size="sm"
+              className="bg-white/80 hover:bg-white border-medical-200"
+            >
+              <LogOut className="h-4 w-4 mr-2" />
+              Sign Out
+            </Button>
+          </div>
+        )}
+        {renderActiveService()}
+      </div>
+    </MedicalSidebar>
   );
 };
 
