@@ -60,9 +60,8 @@ const Index = () => {
       case 'firstaid':
         return <FirstAidGuide onBack={handleBackToDashboard} />;
       case 'doctors':
-        // TODO: Implement DoctorFinder component
         return (
-          <div className="min-h-screen bg-background flex items-center justify-center">
+          <div className="min-h-screen flex items-center justify-center">
             <div className="text-center">
               <h2 className="text-2xl font-bold mb-4">Doctor Finder</h2>
               <p className="text-muted-foreground mb-4">Coming soon - Find healthcare providers near you</p>
@@ -76,9 +75,8 @@ const Index = () => {
           </div>
         );
       case 'faq':
-        // TODO: Implement FAQ component
         return (
-          <div className="min-h-screen bg-background flex items-center justify-center">
+          <div className="min-h-screen flex items-center justify-center">
             <div className="text-center">
               <h2 className="text-2xl font-bold mb-4">Health FAQ</h2>
               <p className="text-muted-foreground mb-4">Coming soon - Medical knowledge chatbot</p>
@@ -92,9 +90,8 @@ const Index = () => {
           </div>
         );
       case 'tips':
-        // TODO: Implement Health Tips component
         return (
-          <div className="min-h-screen bg-background flex items-center justify-center">
+          <div className="min-h-screen flex items-center justify-center">
             <div className="text-center">
               <h2 className="text-2xl font-bold mb-4">Health Tips</h2>
               <p className="text-muted-foreground mb-4">Coming soon - Daily wellness advice</p>
@@ -114,22 +111,7 @@ const Index = () => {
 
   return (
     <MedicalSidebar>
-      <div className="min-h-full">
-        {activeService !== 'dashboard' && (
-          <div className="absolute top-4 right-4 z-10">
-            <Button
-              onClick={handleSignOut}
-              variant="outline"
-              size="sm"
-              className="bg-background/80 hover:bg-background"
-            >
-              <LogOut className="h-4 w-4 mr-2" />
-              Sign Out
-            </Button>
-          </div>
-        )}
-        {renderActiveService()}
-      </div>
+      {renderActiveService()}
     </MedicalSidebar>
   );
 };
