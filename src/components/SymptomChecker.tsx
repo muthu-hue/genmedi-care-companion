@@ -40,52 +40,61 @@ export const SymptomChecker = ({ onBack }: SymptomCheckerProps) => {
 
     setIsAnalyzing(true);
     
-    // Simulate AI analysis
-    setTimeout(() => {
-      const mockResults: SymptomResult[] = [
-        {
-          condition: "Common Cold",
-          probability: "High (75%)",
-          description: "A viral infection of the upper respiratory tract, typically mild and self-limiting.",
-          recommendations: [
-            "Rest and drink plenty of fluids",
-            "Consider over-the-counter pain relievers",
-            "Monitor for worsening symptoms",
-            "Consult a doctor if symptoms persist beyond 10 days"
-          ]
+    try {
+      const response = await fetch('/api/analyze-symptoms', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-        {
-          condition: "Seasonal Allergies",
-          probability: "Medium (45%)",
-          description: "Allergic reaction to environmental allergens like pollen or dust.",
-          recommendations: [
-            "Identify and avoid allergen triggers",
-            "Consider antihistamines",
-            "Keep windows closed during high pollen days",
-            "Consult an allergist for testing"
-          ]
-        },
-        {
-          condition: "Viral Respiratory Infection",
-          probability: "Medium (35%)",
-          description: "Various viral infections affecting the respiratory system.",
-          recommendations: [
-            "Rest and supportive care",
-            "Stay hydrated",
-            "Monitor temperature",
-            "Seek medical care if breathing difficulties occur"
-          ]
-        }
-      ];
+        body: JSON.stringify({
+          symptoms,
+          age,
+          gender,
+          duration
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to analyze symptoms');
+      }
+
+      const data = await response.json();
       
-      setResults(mockResults);
-      setIsAnalyzing(false);
+      if (data.error) {
+        throw new Error(data.error);
+      }
+
+      setResults(data.analysis || []);
       
       toast({
         title: "Analysis Complete",
         description: "Your symptom analysis is ready. Please review the results below.",
       });
-    }, 2000);
+    } catch (error) {
+      console.error('Error analyzing symptoms:', error);
+      toast({
+        title: "Analysis Failed",
+        description: "Unable to analyze symptoms. Please try again or consult a healthcare professional.",
+        variant: "destructive"
+      });
+      
+      // Fallback results
+      setResults([
+        {
+          condition: "Unable to Analyze",
+          probability: "Please consult a doctor",
+          description: "We encountered an issue analyzing your symptoms. Please consult with a healthcare professional for proper evaluation.",
+          recommendations: [
+            "Schedule an appointment with your primary care physician",
+            "Provide detailed symptom information to your doctor",
+            "Monitor your symptoms and note any changes",
+            "Seek immediate medical attention if symptoms worsen"
+          ]
+        }
+      ]);
+    } finally {
+      setIsAnalyzing(false);
+    }
   };
 
   return (
@@ -115,7 +124,7 @@ export const SymptomChecker = ({ onBack }: SymptomCheckerProps) => {
           <CardHeader>
             <CardTitle>Tell me about your symptoms</CardTitle>
             <CardDescription>
-              Please provide as much detail as possible for a more accurate analysis
+              Please provide as much detail as possible for a more accurate AI analysis
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -130,7 +139,7 @@ export const SymptomChecker = ({ onBack }: SymptomCheckerProps) => {
               />
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               <div>
                 <Label htmlFor="age">Age</Label>
                 <Input
@@ -252,12 +261,12 @@ export const SymptomChecker = ({ onBack }: SymptomCheckerProps) => {
             </div>
 
             {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button variant="default" size="lg">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
+              <Button variant="default" size="lg" className="w-full sm:w-auto">
                 <MapPin className="w-4 h-4 mr-2" />
                 Find Nearby Doctors
               </Button>
-              <Button variant="outline" size="lg">
+              <Button variant="outline" size="lg" className="w-full sm:w-auto">
                 Get Second Opinion
               </Button>
             </div>
